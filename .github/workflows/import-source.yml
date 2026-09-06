@@ -1,0 +1,63 @@
+name: Import verified source bundle
+on:
+  push:
+    paths:
+      - '.source-upload/manifest.json'
+permissions:
+  contents: write
+concurrency:
+  group: source-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Verify and unpack source
+        shell: python
+        run: |
+          import base64, hashlib, io, json, pathlib, tarfile
+          root = pathlib.Path.cwd()
+          meta = json.loads((root / '.source-upload/manifest.json').read_text())
+          chunks = []
+          for part in meta['parts']:
+              assert '/' not in part['name'] and '\\' not in part['name']
+              text = (root / '.source-upload' / part['name']).read_bytes()
+              assert hashlib.sha256(text).hexdigest() == part['sha256'], part['name']
+              chunks.append(text)
+          data = base64.b64decode(b''.join(chunks), validate=True)
+          assert hashlib.sha256(data).hexdigest() == meta['sha256'], 'Bundle checksum mismatch'
+          assert len(data) < 5000000
+          with tarfile.open(fileobj=io.BytesIO(data), mode='r:xz') as archive:
+              members = archive.getmembers()
+              assert len(members) <= 200
+              for item in members:
+                  path = pathlib.PurePosixPath(item.name)
+                  assert item.isfile() and not path.is_absolute() and '..' not in path.parts
+                  assert path.parts[0] not in ('.git', '.github', '.source-upload', 'data', 'models', 'logs')
+                  assert item.size <= 2000000
+                  content = archive.extractfile(item).read()
+                  assert hashlib.sha256(content).hexdigest() == meta['files'][item.name]
+                  destination = root / path
+                  if destination.exists():
+                      assert destination.read_bytes() == content, 'Refusing to overwrite: ' + item.name
+                  else:
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      destination.write_bytes(content)
+                      if item.mode & 0o111:
+                          destination.chmod(0o755)
+          assert len(members) == len(meta['files'])
+      - name: Commit source without rewriting history
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add --all
+          git rm -r -- .source-upload
+          git diff --cached --check
+          git commit -m 'feat: import Simple KTV v0.1.1 with Windows BAT launchers'
+          git push origin HEAD:main
