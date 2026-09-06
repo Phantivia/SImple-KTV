@@ -1,0 +1,52 @@
+name: validate
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      NUMBA_NUM_THREADS: "4"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg librubberband2 libsndfile1
+      - run: pip install -r backend/requirements.txt -r backend/requirements-test.txt && pip check
+      - run: npm install --ignore-scripts --no-audit --no-fund && npm run build && npm test
+        working-directory: frontend
+      - run: python -m pytest --junitxml=reports/pytest.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-test-report
+          path: reports/
+  windows-launcher:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exercise BAT entry points with Windows PowerShell 5.1 and mocked Docker
+        shell: powershell
+        run: .\scripts\tests\windows-launcher.Tests.ps1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-launcher-report
+          path: reports/windows-launcher.json
+  cpu-image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build --target cpu -t simple-ktv:ci .
+      - run: docker run --rm simple-ktv:ci python scripts/doctor.py
+  # GPU inference requires an explicitly configured NVIDIA runner and licensed
+  # evaluation clips. No CPU-only green check is presented as GPU validation.

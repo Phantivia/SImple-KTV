@@ -1,0 +1,10 @@
+services:
+  ktv:
+    image: simple-ktv:gpu
+    build:
+      target: gpu
+    gpus: all
+    environment:
+      KTV_REQUIRE_GPU: "1"
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility

@@ -1,0 +1,25 @@
+name: simple-ktv
+services:
+  ktv:
+    image: simple-ktv:cpu
+    build:
+      context: .
+      target: cpu
+    ports:
+      - "127.0.0.1:7860:7860"
+    volumes:
+      - ktv-data:/data
+      - ktv-models:/models
+    environment:
+      KTV_REQUIRE_GPU: "0"
+      KTV_MAX_UPLOAD_MB: "200"
+      KTV_MAX_DURATION_SECONDS: "1200"
+    init: true
+    restart: unless-stopped
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    stop_grace_period: 20s
+    shm_size: "1gb"
+volumes:
+  ktv-data:
+  ktv-models:

@@ -1,0 +1,54 @@
+{
+  "kind": "static packaging checks only; not a Windows execution test",
+  "checks": [
+    {
+      "file": "diagnose.bat",
+      "crlf": true,
+      "ascii": true,
+      "target_exists": true,
+      "exit_code_preserved": true
+    },
+    {
+      "file": "logs.bat",
+      "crlf": true,
+      "ascii": true,
+      "target_exists": true,
+      "exit_code_preserved": true
+    },
+    {
+      "file": "start-cpu.bat",
+      "crlf": true,
+      "ascii": true,
+      "target_exists": true,
+      "exit_code_preserved": true
+    },
+    {
+      "file": "start.bat",
+      "crlf": true,
+      "ascii": true,
+      "target_exists": true,
+      "exit_code_preserved": true
+    },
+    {
+      "file": "stop.bat",
+      "crlf": true,
+      "ascii": true,
+      "target_exists": true,
+      "exit_code_preserved": true
+    },
+    {
+      "file": "upload.bat",
+      "crlf": true,
+      "ascii": true,
+      "target_exists": true,
+      "exit_code_preserved": true
+    }
+  ],
+  "manifest_files": 79,
+  "backend_tests": "46 passed",
+  "frontend_tests": "13 passed",
+  "windows_execution": "not run",
+  "docker_integration": "not run",
+  "gpu_inference": "not run",
+  "github_upload": "initialized only; later source-tree writes blocked"
+}

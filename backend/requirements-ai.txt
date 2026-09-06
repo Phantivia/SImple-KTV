@@ -1,0 +1,4 @@
+# RoFormer uses PyTorch CUDA, not ONNX Runtime CUDA. The cpu extra supplies the
+# required ONNX import without introducing a second CUDA/cuDNN compatibility chain.
+audio-separator[cpu]==0.41.1
+torchcrepe==0.0.24

@@ -1,0 +1,22 @@
+{
+  "python": "3.13.5",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.41",
+  "cpu_only": true,
+  "packages": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "soundfile": "0.13.1",
+    "librosa": "0.11.0",
+    "praat-parselmouth": "0.4.7",
+    "pedalboard": "0.9.23",
+    "fastapi": "0.128.2",
+    "pydantic": "2.13.4",
+    "uvicorn": "0.48.0",
+    "pytest": "9.0.2",
+    "httpx": "0.28.1",
+    "torch": "2.10.0+cpu"
+  },
+  "gpu_inference_executed": false,
+  "docker_build_executed": false,
+  "browser_transport": "page.set_content + real localhost API through test-only bindings; native navigation blocked by managed browser policy"
+}

@@ -1,0 +1,92 @@
+
+> simple-ktv-web@0.1.1 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: display clock carries rounded seconds to the next minute
+ok 1 - display clock carries rounded seconds to the next minute
+  ---
+  duration_ms: 0.897122
+  type: 'test'
+  ...
+# Subtest: untrusted track labels are HTML-escaped
+ok 2 - untrusted track labels are HTML-escaped
+  ---
+  duration_ms: 0.261655
+  type: 'test'
+  ...
+# Subtest: MIDI display includes pitch class and octave
+ok 3 - MIDI display includes pitch class and octave
+  ---
+  duration_ms: 0.15937
+  type: 'test'
+  ...
+# Subtest: recordings are float32 mono WAV at the actual audio context sample rate
+ok 4 - recordings are float32 mono WAV at the actual audio context sample rate
+  ---
+  duration_ms: 0.627085
+  type: 'test'
+  ...
+# Subtest: automation interpolation is linear in dB, not in amplitude
+ok 5 - automation interpolation is linear in dB, not in amplitude
+  ---
+  duration_ms: 0.270026
+  type: 'test'
+  ...
+# Subtest: tracks without automation use their configured gain
+ok 6 - tracks without automation use their configured gain
+  ---
+  duration_ms: 0.211199
+  type: 'test'
+  ...
+# Subtest: frame-exact punch capture excludes count-in and end padding
+ok 7 - frame-exact punch capture excludes count-in and end padding
+  ---
+  duration_ms: 3.663851
+  type: 'test'
+  ...
+# Subtest: count-in emits no microphone PCM and no output
+ok 8 - count-in emits no microphone PCM and no output
+  ---
+  duration_ms: 0.78967
+  type: 'test'
+  ...
+# Subtest: early stop flushes the partial take only once
+ok 9 - early stop flushes the partial take only once
+  ---
+  duration_ms: 0.85609
+  type: 'test'
+  ...
+# Subtest: stopping during count-in produces an empty capture rather than old audio
+ok 10 - stopping during count-in produces an empty capture rather than old audio
+  ---
+  duration_ms: 0.929801
+  type: 'test'
+  ...
+# Subtest: chunk boundaries neither duplicate nor lose samples
+ok 11 - chunk boundaries neither duplicate nor lose samples
+  ---
+  duration_ms: 6.660618
+  type: 'test'
+  ...
+# Subtest: temporarily unavailable input is zero-filled at the correct clock positions
+ok 12 - temporarily unavailable input is zero-filled at the correct clock positions
+  ---
+  duration_ms: 0.647856
+  type: 'test'
+  ...
+# Subtest: a subsequent arm resets buffers and capture length
+ok 13 - a subsequent arm resets buffers and capture length
+  ---
+  duration_ms: 0.702138
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 79.03097

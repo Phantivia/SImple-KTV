@@ -1,0 +1,18 @@
+{
+  "mode": "inline UI + real HTTP API bridge",
+  "checks": [
+    "Application boot",
+    "Real synthesized project creation and 3 real waveform assets",
+    "1536px desktop layout has no horizontal document overflow",
+    "Mixer mutation persists through API and rerenders",
+    "Revision-checked undo from browser",
+    "390px mobile layout has no horizontal document overflow",
+    "No uncaught application JavaScript errors"
+  ],
+  "errors": [],
+  "not_verified": [
+    "Native navigation / CSP / module loading",
+    "Web Audio playback",
+    "Microphone and AudioWorklet in a secure context"
+  ]
+}

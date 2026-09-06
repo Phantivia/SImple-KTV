@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0c0c0c"/>
+  <meta name="description" content="Simple KTV — 本地优先的 AI 辅助录唱与精修工作台"/>
+  <title>Simple KTV — Your voice, in every pixel.</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <script type="module" src="/js/main.js"></script>
+</head>
+<body>
+  <aside class="rail" aria-label="导航">
+    <a class="brand-mark" href="/" title="Simple KTV 首页"><span></span><span></span><span></span><span></span><span></span></a>
+    <div class="rail-links">
+      <button class="rail-button active" data-action="studio" title="录音工作台" aria-label="录音工作台">▥</button>
+      <button class="rail-button" data-action="library" title="工程库" aria-label="工程库">▦</button>
+      <button class="rail-button" data-action="models" title="模型库" aria-label="模型库">◇</button>
+      <button class="rail-button" data-action="history" title="任务与导出" aria-label="任务与导出">↗</button>
+    </div>
+    <div class="rail-bottom"><span class="vertical-label">LOCAL / PRIVATE</span><button class="rail-button" data-action="help" title="使用帮助" aria-label="使用帮助">?</button></div>
+  </aside>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="wordmark">SIMPLE<span class="slash">/</span>KTV <span class="edition">AUDIO WORKSPACE</span></div>
+      <div class="header-right"><span id="runtime-badge" class="status-chip"><i></i>连接本地引擎</span><button class="quiet desktop-only" data-action="help">使用指南 <span>↗</span></button><button class="outline" data-action="export">导出作品 <span>↗</span></button></div>
+    </header>
+    <div class="workspace">
+      <main class="studio">
+        <div class="session-title"><div><span class="eyebrow">SESSION / <span id="session-number">000</span></span><h2 id="project-name">未命名的下一首</h2></div><div class="session-actions"><button class="quiet" data-action="library">工程库 ▾</button><button class="quiet" data-action="import">＋ 导入歌曲</button></div></div>
+        <section class="hero" aria-label="像素波浪可视化">
+          <canvas id="pixel-tide" aria-label="随声音变化的像素波浪"></canvas>
+          <div class="hero-copy"><span class="eyebrow">LESS FRICTION. MORE FEELING.</span><h1>YOUR VOICE.<br/><span>IN EVERY PIXEL.</span></h1><p>从原曲，到只属于你的版本。</p></div>
+          <div class="hero-footer"><span id="hero-status">◌ &nbsp; LOCAL-FIRST AUDIO LAB</span><span>WAVEFORM / 001</span></div>
+          <button class="hero-expand" data-action="stage" title="全屏 KTV" aria-label="全屏 KTV">⤢</button>
+        </section>
+        <div class="workflow"><div><b>01</b> 导入原曲</div><span>／</span><div><b>02</b> AI 分离</div><span>／</span><div><b>03</b> 录制声音</div><span>／</span><div><b>04</b> 精修与导出</div><span class="workflow-note">你的音频，仅在本地。</span></div>
+        <section class="transport" aria-label="播放与录音控制">
+          <div class="transport-main"><button class="play-button" id="play-button" data-action="play" aria-label="播放或暂停" title="播放 / 暂停 [Space]">▶</button><button class="icon-button" data-action="stop" aria-label="停止并回到开头" title="停止">■</button><button class="record-button" id="record-button" data-action="record" title="录制 [R]"><i></i><span>录制</span></button></div>
+          <div class="time-display"><strong id="play-time">00:00.0</strong><span>/ <span id="total-time">00:00.0</span></span></div>
+          <div class="transport-tools"><button class="icon-button" id="loop-button" data-action="loop" aria-label="选区循环" title="选区 AB 循环">↻</button><span class="key-label">KEY</span><button class="small-step" data-action="key-down" aria-label="降低调号">−</button><span id="key-value">0</span><button class="small-step" data-action="key-up" aria-label="提高调号">＋</button><button class="quiet key-apply" data-action="transpose">应用</button></div>
+        </section>
+        <div id="job-banner" class="job-banner hidden" aria-live="polite"></div>
+        <section class="tracks-section" aria-label="多轨编辑器">
+          <div class="section-heading"><div><span class="eyebrow">MULTITRACK</span><span class="track-count" id="track-count">00 TRACKS</span></div><div class="editor-tools"><button class="icon-button" id="undo-button" data-action="undo" title="撤销 [Ctrl+Z]" aria-label="撤销">↶</button><button class="icon-button" id="redo-button" data-action="redo" title="重做 [Ctrl+Shift+Z]" aria-label="重做">↷</button><span class="tool-separator"></span><label class="zoom-control" title="时间轴缩放">− <input id="zoom" type="range" min="1" max="5" step=".5" value="1" aria-label="时间轴缩放"/> ＋</label></div></div>
+          <div id="empty-state" class="empty-state" tabindex="0" role="button" aria-label="导入原版歌曲" data-action="import"><div class="drop-glyph">＋</div><h3>一首歌，一个新的可能。</h3><p>拖入原版 MP3，或点击开始创作</p><span class="file-types">MP3 / WAV / FLAC / M4A</span><button class="outline demo-button" data-action="demo">先体验合成演示 <span>↗</span></button><span class="empty-footnote">演示音频为程序合成，不含商业歌曲。</span></div>
+          <div class="timeline-scroll hidden" id="timeline-scroll"><div id="timeline-inner"><div class="ruler-row"><div class="ruler-label">TRACK / SOURCE</div><canvas id="ruler"></canvas></div><div id="track-list"></div></div></div>
+          <div id="selection-bar" class="selection-bar hidden"><span id="selection-text">拖动波形选择片段</span><div><button class="quiet" data-action="clear-selection">清除</button><button class="quiet" data-action="erase">抹除选区</button><button class="outline" data-action="punch">分段补录 ↗</button></div></div>
+        </section>
+        <section class="lyric-strip" id="lyric-strip"><span class="eyebrow">ON THE MIC</span><p id="current-lyric">把这一刻，唱成你的版本。</p><button class="quiet" data-action="lyrics" title="导入 LRC 歌词">导入歌词 ＋</button></section>
+        <footer class="studio-footer"><span><i class="square-dot"></i> NON-DESTRUCTIVE / 原音频保留</span><span id="save-status">准备就绪</span><span class="desktop-only">SPACE 播放 &nbsp; / &nbsp; R 录音</span></footer>
+      </main>
+      <aside class="inspector" aria-label="精修与设备面板"><div class="inspector-heading"><span class="eyebrow">THE CONTROL ROOM</span><span class="corner-cross">＋</span></div><nav class="tabs" aria-label="工具选项"><button class="tab active" data-tab="process">处理</button><button class="tab" data-tab="pitch">音准</button><button class="tab" data-tab="mix">混音</button><button class="tab" data-tab="devices">设备</button></nav><div id="inspector-body"></div><div class="meter-footer"><div><span>OUTPUT</span><span id="output-level">−∞ dB</span></div><div class="led-meter"><span id="output-meter"></span></div><div class="meter-bottom"><span id="input-state">INPUT / 未连接</span><span id="clip-state">PEAK METER</span></div></div></aside>
+    </div>
+  </div>
+  <input class="hidden" type="file" id="audio-file" accept=".mp3,.wav,.flac,.m4a,.aac,.ogg,.opus,.webm"/>
+  <input class="hidden" type="file" id="lyric-file" accept=".lrc,.txt"/>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <dialog id="modal"><div class="modal-title"><div><span class="eyebrow" id="modal-subtitle"></span><h2 id="modal-title"></h2></div><button class="icon-button" data-action="close-modal" aria-label="关闭">×</button></div><div id="modal-body"></div></dialog>
+  <section id="stage" class="stage hidden"><canvas id="stage-tide"></canvas><div class="stage-top"><div class="wordmark">SIMPLE / KTV</div><button class="outline" data-action="close-stage">退出舞台 ×</button></div><div class="stage-lyrics"><span class="eyebrow">YOUR VOICE, CENTER STAGE.</span><h2 id="stage-current">把这一刻，唱成你的版本。</h2><p id="stage-next"></p></div><div class="stage-bottom"><button class="outline" data-action="play">播放 / 暂停</button><span id="stage-time">00:00</span></div></section>
+</body>
+</html>
